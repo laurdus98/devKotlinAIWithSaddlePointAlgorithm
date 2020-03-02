@@ -1,96 +1,79 @@
 class Matrix(private val matrixAsString: String) {
 
-    fun matrice() : Array<IntArray> {
-        val firstMatrix = arrayOf(intArrayOf(0, -2, -4), intArrayOf(1, 0, -2), intArrayOf(2, 1, 0))
-        return firstMatrix;
-    }
+    fun matrice(): Array<IntArray> {
 
+        println(matrixAsString)
+        val firstMatrix = arrayOf(intArrayOf(0, -2, -4), intArrayOf(1, 0, -2), intArrayOf(2, 1, 0))
+        return firstMatrix
+    }
 }
 
-class SiddlePoint(private val siddlePointAsString: String) {
+class SaddlePoint(private val saddlePointAsString: String) {
 
+    fun controlloColumnMax(matrice: Array<IntArray>, minValCol: Int, minValRow: Int, rowSize: Int): Boolean {
 
-    fun controlloColumnMax( matrice: Array<IntArray>,  minValCol: Int,  minValRow: Int, rowSize: Int) : Boolean {
+        var maxValueCol = minValRow
 
-        var maxValueCol = minValRow;
-
-        for(i in 0..rowSize+1) {
-            if(matrice[i][minValCol] > maxValueCol) {
-                maxValueCol = matrice[i][minValCol];
+        for (i in 0..rowSize + 1) {
+            if (matrice[i][minValCol] > maxValueCol) {
+                maxValueCol = matrice[i][minValCol]
             }
         }
 
-        if(maxValueCol == minValRow) {
-            return true;
+        if (maxValueCol == minValRow) {
+            return true
         }
 
-        return false;
-
+        return false
     }
 
-    fun siddlePoint( matrice: Array<IntArray>,  rigaSize: Int,  colSize: Int) {
-        for(x in 0..rigaSize+1) {
+    fun saddlePoint(matrice: Array<IntArray>, rigaSize: Int, colSize: Int) {
 
-        var minValueRow : Int = matrice[x][0];
-        var minValueCol : Int = 0;
+        for (x in 0..rigaSize + 1) {
 
-        for(y in 0..colSize+1) {
+            var minValueRow: Int = matrice[x][0]
+            var minValueCol: Int = 0
 
-            if(matrice[x][y] < minValueRow) {
-                minValueRow = matrice[x][y];
-                minValueCol = y;
-            } else if(matrice[x][y] == minValueRow) {
+            for (y in 0..colSize + 1) {
 
-                var isMin: Boolean = true;
+                if (matrice[x][y] < minValueRow) {
+                    minValueRow = matrice[x][y]
+                    minValueCol = y
+                } else if (matrice[x][y] == minValueRow) {
 
-                for(k in y+1..colSize+1) {
-                    if(matrice[x][k] < minValueRow) {
-                        isMin = false;
-                    }
-                }
+                    var isMin: Boolean = true
 
-                if(isMin) {
-
-                    if(controlloColumnMax(matrice, y, minValueRow, rigaSize)) {
-                        print("Saddle Point |" + x + "|" + y + "|" + minValueRow);
+                    for (k in y + 1..colSize + 1) {
+                        if (matrice[x][k] < minValueRow) {
+                            isMin = false
+                        }
                     }
 
-                }
+                    if (isMin) {
 
+                        if (controlloColumnMax(matrice, y, minValueRow, rigaSize)) {
+                            println(saddlePointAsString + " " + "(" + x + "," + " " + y + ")" + " " + ":" + " " + minValueRow)
+                        }
+                    }
+                }
             }
 
+            if (controlloColumnMax(matrice, minValueCol, minValueRow, rigaSize)) {
+                println(saddlePointAsString + " " + "(" + x + "," + " " + minValueCol + ")" + " " + ":" + " " + minValueRow)
+            }
         }
-
-        if(controlloColumnMax(matrice, minValueCol, minValueRow, rigaSize)) {
-            print("Saddle Point |" + x + "|" + minValueCol + "|" + minValueRow);
-        }
-
     }
-    }
-
 }
 
 fun main(args: Array<String>) {
-    val matrix: Matrix = Matrix("Matrix");
-    val primaMatrice : Array<IntArray> = matrix.matrice();
-    var r1 = 3;
-    var c1 = 3;
-    val matricePronta = Array(r1) { IntArray(c1) }
-    for (i in 0..r1 - 1) {
-        for (j in 0..c1 - 1) {
-            matricePronta[i][j] = primaMatrice[i][j];
-        }
-    }
-    
-    for (mtrx in matricePronta) {
+    val matrix: Matrix = Matrix("Matrix[3][3]")
+    val primaMatrice: Array<IntArray> = matrix.matrice()
+    for (mtrx in primaMatrice) {
         for (column in mtrx) {
             print("$column    ")
         }
         println()
     }
-
-    val siddlePoints: SiddlePoint = SiddlePoint("SiddlePoint");
-    siddlePoints.siddlePoint(primaMatrice, 1, 1);
-    
-    
+    val saddlePoints: SaddlePoint = SaddlePoint("SaddlePoint")
+    saddlePoints.saddlePoint(primaMatrice, 1, 1)
 }
